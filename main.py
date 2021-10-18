@@ -68,9 +68,48 @@ def verificare_ordine_elemente_pozitive(lista):
     return True
 
 
-def afisare_lista(lista_de_numere):
-    afisare = str(lista_de_numere)
-    print(afisare)
+def numar_divizori_proprii(numar):
+    """
+    Calculeaza numarul de divizori proprii ai unui numar
+    :param numar: o valoare intreaga
+    :return: o valoare intreaga
+    """
+    numar_divizori = 0
+    for i in range(2, numar):
+        if numar % i == 0:
+            numar_divizori = numar_divizori + 1
+    return numar_divizori
+
+
+def numar_aparitii_sir(lista, valoare):
+    """
+    Calculeaza numarul de aparitii a unei valori intr-un sir
+    :param lista: o lista de numere intregi
+    :param valoare: o valoare intreaga
+    :return: o valoare intreaga
+    """
+    numar_aparitii = 0
+    for i in range(len(lista)):
+        if valoare == lista[i]:
+            numar_aparitii = numar_aparitii + 1
+    return numar_aparitii
+
+
+def inlocuire_elemente_cu_numarul_de_divizori(lista):
+    """
+    Editeaza o lista de numere intregi astfel incat elementele care apar o singura data sunt inlocuite cu numarul lor de divizori proprii
+    :param lista: o lista de numere intregi
+    :return: lista de numere editata astfel
+    """
+    rezultat = []
+    for i in range(len(lista)):
+        aparitii = numar_aparitii_sir(lista, lista[i])
+        if aparitii == 1:
+            valoare = numar_divizori_proprii(lista[i])
+            rezultat.append(valoare)
+        else:
+            rezultat.append(lista[i])
+    return rezultat
 
 
 def test_cautare_element():
@@ -97,37 +136,61 @@ def test_verificare_ordine_elemente_pozitive():
     assert verificare_ordine_elemente_pozitive([1, 2, 3, 3, -1, 0]) is False
 
 
+def test_numar_divizori_proprii():
+    assert numar_divizori_proprii(3) == 0
+    assert numar_divizori_proprii(6) == 2
+    assert numar_divizori_proprii(10) == 2
+
+
+def test_numar_aparitii_sir():
+    assert numar_aparitii_sir([1, 2, 2, 3, 4], 2) == 2
+    assert numar_aparitii_sir([1, 2, 3], 1) == 1
+    assert numar_aparitii_sir([5, 10], 19) == 0
+
+
+def test_inlocuire_elemente_cu_numarul_de_divizori():
+    assert inlocuire_elemente_cu_numarul_de_divizori([25, 13, 26, 13, 19]) == [1, 13, 2, 13, 0]
+    assert inlocuire_elemente_cu_numarul_de_divizori([2, 3, 4, 5]) == [0, 0, 1, 0]
+    assert inlocuire_elemente_cu_numarul_de_divizori([19, 19, 17]) == [19, 19, 0]
+
+
 def meniu():
     print("1. Citirea unei liste de numere intregi")
-    print("2. Afisarea listei fara duplicate.")
-    print("3. Afisarea sumei primelor n numere pozitive din lista, unde n se citeste de la tastatura.")
-    print("4. Sa se afiseze “DA” in cazul in care toate numerele pozitive din lista sunt in ordine crescatoare si “NU” altfel.")
-    print("5.")
-    print("6. Iesire")
+    print("2. Afisare lista citita")
+    print("3. Afisarea listei fara duplicate.")
+    print("4. Afisarea sumei primelor n numere pozitive din lista, unde n se citeste de la tastatura.")
+    print("5. Sa se afiseze “DA” in cazul in care toate numerele pozitive din lista sunt in ordine crescatoare si “NU” altfel.")
+    print("6. Afisarea listei obtinute din lista initiala in care numerele care apar doar o singura data sunt inlocuite cu numarul de divizori proprii ai numarului.")
+    print("7. Iesire")
     merge = True
     lista_de_numere = []
     while merge is True:
-        optiune = int(input("Dati o valoare de la 1 la 6: "))
+        optiune = int(input("Dati o valoare de la 1 la 7: "))
         if optiune == 1:
             lista_de_numere = []
             citire_lista(lista_de_numere)
         elif optiune == 2:
-            rezultat = eliminare_duplicate(lista_de_numere)
-            afisare_lista(rezultat)
+            print(lista_de_numere)
         elif optiune == 3:
+            rezultat = eliminare_duplicate(lista_de_numere)
+            print(rezultat)
+        elif optiune == 4:
             numar = int(input("Dati valoarea numarului: "))
             rezultat = suma_elemente_pozitive(lista_de_numere, numar)
             if rezultat is None:
                 print("Dimensiunea listei este prea mica")
             else:
                 print("Rezultatul este:", rezultat)
-        elif optiune == 4:
+        elif optiune == 5:
             verificare = verificare_ordine_elemente_pozitive(lista_de_numere)
             if verificare is True:
                 print("DA")
             else:
                 print("NU")
         elif optiune == 6:
+            rezultat = inlocuire_elemente_cu_numarul_de_divizori(lista_de_numere)
+            print(rezultat)
+        elif optiune == 7:
             merge = False
         else:
             print("Valoare gresita! Incercati din nou!")
@@ -138,6 +201,9 @@ def main():
     test_eliminare_duplicate()
     test_suma_elemente_pozitive()
     test_verificare_ordine_elemente_pozitive()
+    test_numar_divizori_proprii()
+    test_numar_aparitii_sir()
+    test_inlocuire_elemente_cu_numarul_de_divizori()
     meniu()
 
 
