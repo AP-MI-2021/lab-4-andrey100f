@@ -34,6 +34,24 @@ def eliminare_duplicate(lista_de_numere):
     return rezultat
 
 
+def suma_elemente_pozitive(lista, n):
+    """
+    Calculeaza suma a primelor n numere pozitive dintr-o lista
+    :param lista: o lista de numere intregi
+    :param n: o valoare intreaga
+    :return: o valoare intreaga
+    """
+    suma = 0
+    pozitie = 0
+    for i in range(len(lista)):
+        if lista[i] > 0:
+            suma = suma + lista[i]
+            pozitie = pozitie + 1
+            if pozitie == n:
+                return suma
+    return None
+
+
 def afisare_lista(lista_de_numere):
     afisare = str(lista_de_numere)
     print(afisare)
@@ -48,13 +66,19 @@ def test_cautare_element():
 def test_eliminare_duplicate():
     assert eliminare_duplicate([1, 2, 3, 4, 5, 5]) == [1, 2, 3, 4, 5]
     assert eliminare_duplicate([10, 17, 19]) == [10, 17, 19]
-    assert eliminare_duplicate([]) == []
+    assert eliminare_duplicate([1]) == [1]
+
+
+def test_suma_elemente_pozitive():
+    assert suma_elemente_pozitive([10, -3, 25, -1, 3, 25, 18], 3) == 38
+    assert suma_elemente_pozitive([-1, -2, -3], 1) is None
+    assert suma_elemente_pozitive([1, 2, 3, 4], 5) is None
 
 
 def meniu():
     print("1. Citirea unei liste de numere intregi")
-    print("2. Afisarea listei")
-    print("3.")
+    print("2. Afisarea listei fara duplicate.")
+    print("3. Afisarea sumei primelor n numere pozitive din lista, unde n se citeste de la tastatura.")
     print("4.")
     print("5.")
     print("6. Iesire")
@@ -68,6 +92,13 @@ def meniu():
         elif optiune == 2:
             rezultat = eliminare_duplicate(lista_de_numere)
             afisare_lista(rezultat)
+        elif optiune == 3:
+            numar = int(input("Dati valoarea numarului: "))
+            rezultat = suma_elemente_pozitive(lista_de_numere, numar)
+            if rezultat is None:
+                print("Dimensiunea listei este prea mica")
+            else:
+                print("Rezultatul este:", rezultat)
         elif optiune == 6:
             merge = False
         else:
@@ -76,6 +107,8 @@ def meniu():
 
 def main():
     test_cautare_element()
+    test_eliminare_duplicate()
+    test_suma_elemente_pozitive()
     meniu()
 
 
