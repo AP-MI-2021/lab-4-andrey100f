@@ -44,12 +44,28 @@ def suma_elemente_pozitive(lista, n):
     suma = 0
     pozitie = 0
     for i in range(len(lista)):
-        if lista[i] > 0:
+        if lista[i] >= 0:
             suma = suma + lista[i]
             pozitie = pozitie + 1
             if pozitie == n:
                 return suma
     return None
+
+
+def verificare_ordine_elemente_pozitive(lista):
+    """
+    Verifica daca elementele pozitive dintr-o lista sunt in ordine crescatoare
+    :param lista: o lista de numere intregi
+    :return: True, daca lista are aceasta proprietate, respectiv False in caz contrar
+    """
+    lista_pozitive = []
+    for i in range(len(lista)):
+        if lista[i] >= 0:
+            lista_pozitive.append(lista[i])
+    for i in range(1, len(lista_pozitive)):
+        if lista_pozitive[i - 1] > lista_pozitive[i]:
+            return False
+    return True
 
 
 def afisare_lista(lista_de_numere):
@@ -75,11 +91,17 @@ def test_suma_elemente_pozitive():
     assert suma_elemente_pozitive([1, 2, 3, 4], 5) is None
 
 
+def test_verificare_ordine_elemente_pozitive():
+    assert verificare_ordine_elemente_pozitive([10, 13, -1, 24, 33, 45]) is True
+    assert verificare_ordine_elemente_pozitive([5, 4, 3, 2, -1]) is False
+    assert verificare_ordine_elemente_pozitive([1, 2, 3, 3, -1, 0]) is False
+
+
 def meniu():
     print("1. Citirea unei liste de numere intregi")
     print("2. Afisarea listei fara duplicate.")
     print("3. Afisarea sumei primelor n numere pozitive din lista, unde n se citeste de la tastatura.")
-    print("4.")
+    print("4. Sa se afiseze “DA” in cazul in care toate numerele pozitive din lista sunt in ordine crescatoare si “NU” altfel.")
     print("5.")
     print("6. Iesire")
     merge = True
@@ -99,6 +121,12 @@ def meniu():
                 print("Dimensiunea listei este prea mica")
             else:
                 print("Rezultatul este:", rezultat)
+        elif optiune == 4:
+            verificare = verificare_ordine_elemente_pozitive(lista_de_numere)
+            if verificare is True:
+                print("DA")
+            else:
+                print("NU")
         elif optiune == 6:
             merge = False
         else:
@@ -109,6 +137,7 @@ def main():
     test_cautare_element()
     test_eliminare_duplicate()
     test_suma_elemente_pozitive()
+    test_verificare_ordine_elemente_pozitive()
     meniu()
 
 
